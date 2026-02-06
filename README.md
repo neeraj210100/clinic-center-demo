@@ -104,20 +104,34 @@ clinic-center-demo/
 
 ## Configuration
 
-### WhatsApp Integration
+### WhatsApp Integration (Twilio)
 
-1. **WhatsApp Chat Button**:
+The project uses **Twilio** for WhatsApp messaging. See `TWILIO_SETUP.md` for detailed instructions.
+
+**Quick Setup**:
+
+1. **Get Twilio Credentials**:
+   - Sign up at [Twilio](https://www.twilio.com/)
+   - Get Account SID and Auth Token from dashboard
+   - Join WhatsApp Sandbox (free for testing)
+
+2. **Set Environment Variables**:
+   ```bash
+   export TWILIO_ACCOUNT_SID="your_account_sid"
+   export TWILIO_AUTH_TOKEN="your_auth_token"
+   export TWILIO_WHATSAPP_FROM="whatsapp:+14155238886"  # Sandbox number
+   export TWILIO_ENABLED="true"
+   ```
+
+3. **WhatsApp Chat Button** (Frontend):
    - Edit `frontend/src/components/WhatsAppButton.js`
    - Update the `whatsappNumber` variable with your clinic's WhatsApp number
+   - This uses WhatsApp web link (works without API)
 
-2. **WhatsApp API for Appointments**:
-   - For production, you'll need WhatsApp Business API credentials
-   - Update `backend/src/main/resources/application.properties`:
-     ```properties
-     whatsapp.api.token=your-whatsapp-api-token
-     whatsapp.phone.number=+1234567890
-     ```
-   - Modify `backend/src/main/java/com/clinic/service/WhatsAppService.java` to use your preferred WhatsApp API provider (Twilio, MessageBird, etc.)
+4. **For Production**:
+   - Apply for WhatsApp Business API access in Twilio Console
+   - Update `TWILIO_WHATSAPP_FROM` with your production number
+   - See `TWILIO_SETUP.md` for complete guide
 
 ### Google Forms Integration
 
