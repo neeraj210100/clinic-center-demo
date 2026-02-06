@@ -18,7 +18,7 @@ public class WhatsAppService {
     private String authToken;
     
     @Value("${twilio.whatsapp.from:}")
-    private String fromNumber;
+    private String serverNumber;
     
     @Value("${twilio.enabled:false}")
     private boolean twilioEnabled;
@@ -37,7 +37,18 @@ public class WhatsAppService {
     public String sendAppointmentConfirmation(Appointment appointment) {
         try {
             String message = buildAppointmentMessage(appointment);
-            return sendMessage(appointment.getPhoneNumber(), message);
+            return sendMessage(false,appointment.getPhoneNumber(), message);
+        } catch (Exception e) {
+            // Log error but don't fail the appointment creation
+            System.err.println("Failed to send WhatsApp message: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public String sendAppointment(Appointment appointment) {
+        try {
+            String message = buildAppointmentMessage(appointment);
+            return sendMessage(true,appointment.getPhoneNumber(), message);
         } catch (Exception e) {
             // Log error but don't fail the appointment creation
             System.err.println("Failed to send WhatsApp message: " + e.getMessage());
@@ -48,37 +59,34 @@ public class WhatsAppService {
     
     private String buildAppointmentMessage(Appointment appointment) {
         StringBuilder message = new StringBuilder();
-        message.append("🏥 *Appointment Confirmation*\n\n");
-        message.append("Dear ").append(appointment.getPatientName()).append(",\n\n");
-        message.append("Your appointment has been confirmed:\n");
+        message.append("🏥 *Appointment Booking*\n\n");
+        message.append("Patient Name ").append(appointment.getPatientName()).append(",\n\n");
         message.append("📅 Date & Time: ").append(appointment.getAppointmentDateTime()).append("\n");
         if (appointment.getReason() != null && !appointment.getReason().isEmpty()) {
             message.append("📋 Reason: ").append(appointment.getReason()).append("\n");
         }
-        message.append("\nPlease arrive 10 minutes early.\n");
-        message.append("If you need to reschedule, please contact us.\n\n");
-        message.append("Thank you!");
         return message.toString();
     }
     
-    private String sendMessage(String toPhoneNumber, String messageText) {
-        // Format phone number for Twilio (ensure it starts with whatsapp:)
-        String formattedTo = formatPhoneNumber(toPhoneNumber);
-        
-        // Log the message (always do this for debugging)
-        System.out.println("Sending WhatsApp message to: " + formattedTo);
-        System.out.println("Message: " + messageText);
-        
+    private String sendMessage(Boolean toServer,String phoneNumber,String messageText) {
+
         // If Twilio is not enabled or not configured, just log and return mock ID
-        if (!twilioEnabled || fromNumber == null || fromNumber.isEmpty()) {
+        if (!twilioEnabled || serverNumber == null || serverNumber.isEmpty()) {
             System.out.println("Twilio not enabled. Message logged only.");
             return "mock_message_id_" + System.currentTimeMillis();
         }
         
         try {
             // Format from number (should be like whatsapp:+14155238886)
-            String formattedFrom = formatPhoneNumber(fromNumber);
-            
+            String formattedFrom="";
+            String formattedTo="";
+            if(toServer) {
+                 formattedFrom = formatPhoneNumber(phoneNumber);
+                 formattedTo = formatPhoneNumber(serverNumber);
+            }else{
+                formattedFrom = formatPhoneNumber(serverNumber);
+                formattedTo = formatPhoneNumber(phoneNumber);
+            }
             // Send message via Twilio
             Message message = Message.creator(
                     new PhoneNumber(formattedTo),
@@ -119,9 +127,5 @@ public class WhatsAppService {
         }
         
         return cleaned;
-    }
-    
-    public String sendQuickMessage(String phoneNumber, String message) {
-        return sendMessage(phoneNumber, message);
     }
 }

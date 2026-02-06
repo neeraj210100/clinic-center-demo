@@ -38,7 +38,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping
-    public ResponseEntity<Appointment> createAppointment(@Valid @RequestBody AppointmentRequest request) {
+    public ResponseEntity<Appointment> createAppointment(@Valid @RequestBody AppointmentRequest request) throws Exception {
         Appointment appointment = appointmentService.createAppointment(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(appointment);
     }

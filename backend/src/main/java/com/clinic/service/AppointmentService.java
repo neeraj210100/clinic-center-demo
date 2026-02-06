@@ -17,7 +17,7 @@ public class AppointmentService {
     private final WhatsAppService whatsAppService;
     
     @Transactional
-    public Appointment createAppointment(AppointmentRequest request) {
+    public Appointment createAppointment(AppointmentRequest request) throws Exception {
         Appointment appointment = new Appointment();
         appointment.setPatientName(request.getPatientName());
         appointment.setPhoneNumber(request.getPhoneNumber());
@@ -29,12 +29,13 @@ public class AppointmentService {
         
         Appointment savedAppointment = appointmentRepository.save(appointment);
         
-        // Send WhatsApp confirmation
-        String messageId = whatsAppService.sendAppointmentConfirmation(savedAppointment);
-        if (messageId != null) {
-            savedAppointment.setWhatsappMessageId(messageId);
-            savedAppointment = appointmentRepository.save(savedAppointment);
-        }
+        String messageId=whatsAppService.sendAppointment(savedAppointment);
+        if (messageId == null) { throw new Exception("Appointment booking failed");}
+        messageId=whatsAppService.sendAppointmentConfirmation(savedAppointment);
+        if (messageId == null) { throw new Exception("Appointment booking confirmation failed");}
+        savedAppointment.setWhatsappMessageId(messageId);
+        savedAppointment = appointmentRepository.save(savedAppointment);
+
         
         return savedAppointment;
     }
