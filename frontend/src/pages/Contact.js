@@ -46,7 +46,7 @@ const Contact = () => {
 
     try {
       const appointmentDateTime = new Date(appointmentData.appointmentDateTime).toISOString();
-      const response = await appointmentAPI.create({
+      await appointmentAPI.create({
         ...appointmentData,
         appointmentDateTime,
       });
