@@ -18,13 +18,4 @@ export const appointmentAPI = {
   getByStatus: (status) => api.get(`/appointments/status/${status}`),
 };
 
-// Lead API
-export const leadAPI = {
-  create: (data) => api.post('/leads', data),
-  getAll: () => api.get('/leads'),
-  getById: (id) => api.get(`/leads/${id}`),
-  updateStatus: (id, status) => api.put(`/leads/${id}/status?status=${status}`),
-  exportToExcel: () => api.get('/leads/export/excel', { responseType: 'blob' }),
-};
-
 export default api;

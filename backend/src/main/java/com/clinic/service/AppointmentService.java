@@ -14,10 +14,10 @@ import java.util.List;
 public class AppointmentService {
     
     private final AppointmentRepository appointmentRepository;
-    private final WhatsAppService whatsAppService;
+    private final NotificationService notificationService;
     
     @Transactional
-    public Appointment createAppointment(AppointmentRequest request) throws Exception {
+    public Appointment createAppointment(AppointmentRequest request) {
         Appointment appointment = new Appointment();
         appointment.setPatientName(request.getPatientName());
         appointment.setPhoneNumber(request.getPhoneNumber());
@@ -26,17 +26,8 @@ public class AppointmentService {
         appointment.setReason(request.getReason());
         appointment.setNotes(request.getNotes());
         appointment.setStatus(Appointment.AppointmentStatus.PENDING);
-        
         Appointment savedAppointment = appointmentRepository.save(appointment);
-        
-        String messageId=whatsAppService.sendAppointment(savedAppointment);
-        if (messageId == null) { throw new Exception("Appointment booking failed");}
-        messageId=whatsAppService.sendAppointmentConfirmation(savedAppointment);
-        if (messageId == null) { throw new Exception("Appointment booking confirmation failed");}
-        savedAppointment.setWhatsappMessageId(messageId);
-        savedAppointment = appointmentRepository.save(savedAppointment);
-
-        
+        notificationService.sendAppointmentConfirmation(savedAppointment);
         return savedAppointment;
     }
     

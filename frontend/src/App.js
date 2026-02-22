@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Services from './pages/Services';
 import Contact from './pages/Contact';
-import WhatsAppButton from './components/WhatsAppButton';
 import './App.css';
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
-        <WhatsAppButton />
       </div>
     </Router>
   );

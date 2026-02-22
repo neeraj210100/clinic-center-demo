@@ -29,7 +29,7 @@ public class AppointmentController {
     
     @Operation(
             summary = "Create a new appointment",
-            description = "Creates a new appointment and sends WhatsApp confirmation to the patient"
+            description = "Creates a new appointment"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Appointment created successfully",
@@ -38,7 +38,7 @@ public class AppointmentController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping
-    public ResponseEntity<Appointment> createAppointment(@Valid @RequestBody AppointmentRequest request) throws Exception {
+    public ResponseEntity<Appointment> createAppointment(@Valid @RequestBody AppointmentRequest request) {
         Appointment appointment = appointmentService.createAppointment(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(appointment);
     }

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Appointment Confirmation</title>
+</head>
+<body>
+    <h2>Appointment Confirmation</h2>
+    <p>Hello <strong th:text="${patientName}">Patient</strong>,</p>
+    <p>Your appointment has been successfully booked.</p>
+    <ul>
+        <li><strong>Date &amp; Time:</strong> <span th:text="${appointmentDateTime}">date time</span></li>
+        <li><strong>Reason for visit:</strong> <span th:text="${reason}">reason</span></li>
+    </ul>
+    <p>If you need to reschedule or have any questions, please contact us at <span th:text="${clinicPhone}">phone</span>.</p>
+    <p>Thank you,<br/><span th:text="${clinicName}">Clinic Center</span></p>
+</body>
+</html>

@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { appointmentAPI, leadAPI } from '../services/api';
+import { appointmentAPI } from '../services/api';
 import './Contact.css';
 
 const Contact = () => {
-  const [formType, setFormType] = useState('appointment'); // 'appointment' or 'contact'
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
-  // Appointment form state
   const [appointmentData, setAppointmentData] = useState({
     patientName: '',
     phoneNumber: '',
@@ -17,24 +15,9 @@ const Contact = () => {
     notes: '',
   });
 
-  // Contact/Lead form state
-  const [contactData, setContactData] = useState({
-    name: '',
-    email: '',
-    phoneNumber: '',
-    message: '',
-  });
-
   const handleAppointmentChange = (e) => {
     setAppointmentData({
       ...appointmentData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleContactChange = (e) => {
-    setContactData({
-      ...contactData,
       [e.target.name]: e.target.value,
     });
   };
@@ -49,11 +32,11 @@ const Contact = () => {
       await appointmentAPI.create({
         ...appointmentData,
         appointmentDateTime,
-      });
+
 
       setMessage({
         type: 'success',
-        text: 'Appointment booked successfully! You will receive a WhatsApp confirmation shortly.',
+        text: 'Appointment booked successfully! We will contact you to confirm.',
       });
 
       // Reset form

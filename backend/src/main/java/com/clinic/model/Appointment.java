@@ -39,8 +39,6 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status = AppointmentStatus.PENDING;
     
-    private String whatsappMessageId;
-    
     private LocalDateTime createdAt = LocalDateTime.now();
     
     public enum AppointmentStatus {
