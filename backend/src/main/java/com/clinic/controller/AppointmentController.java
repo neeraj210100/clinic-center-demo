@@ -27,9 +27,9 @@ import java.util.List;
 })
 @Tag(name = "Appointments", description = "API endpoints for managing patient appointments")
 public class AppointmentController {
-    
+
     private final AppointmentService appointmentService;
-    
+
     @Operation(
             summary = "Create a new appointment",
             description = "Creates a new appointment"
@@ -45,7 +45,7 @@ public class AppointmentController {
         Appointment appointment = appointmentService.createAppointment(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(appointment);
     }
-    
+
     @Operation(
             summary = "Get all appointments",
             description = "Retrieves a list of all appointments in the system"
@@ -55,7 +55,7 @@ public class AppointmentController {
     public ResponseEntity<List<Appointment>> getAllAppointments() {
         return ResponseEntity.ok(appointmentService.getAllAppointments());
     }
-    
+
     @Operation(
             summary = "Get appointment by ID",
             description = "Retrieves a specific appointment by its ID"
@@ -70,7 +70,7 @@ public class AppointmentController {
             @Parameter(description = "Appointment ID", required = true) @PathVariable Long id) {
         return ResponseEntity.ok(appointmentService.getAppointmentById(id));
     }
-    
+
     @Operation(
             summary = "Update appointment status",
             description = "Updates the status of an existing appointment (PENDING, CONFIRMED, CANCELLED, COMPLETED)"
@@ -86,7 +86,7 @@ public class AppointmentController {
             @Parameter(description = "New status", required = true) @RequestParam Appointment.AppointmentStatus status) {
         return ResponseEntity.ok(appointmentService.updateAppointmentStatus(id, status));
     }
-    
+
     @Operation(
             summary = "Get appointments by status",
             description = "Retrieves all appointments filtered by status"
