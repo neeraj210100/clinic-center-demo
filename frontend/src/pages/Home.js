@@ -7,7 +7,7 @@ const Home = () => {
     <div className="home">
       <section className="hero">
         <div className="hero-content">
-          <h1>Welcome to Clinic Center</h1>
+          <h1>Welcome to Jagatpur Clinic Center</h1>
           <p className="hero-subtitle">Your Trusted Healthcare Partner</p>
           <p className="hero-description">
             We provide comprehensive healthcare services with a focus on patient care,

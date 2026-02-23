@@ -13,7 +13,7 @@ const Navbar = () => {
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
           <span className="logo-icon">🏥</span>
-          <span>Clinic Center</span>
+          <span>Jagatpur Clinic Center</span>
         </Link>
         
         <div className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>

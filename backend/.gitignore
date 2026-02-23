@@ -35,3 +35,7 @@ build/
 .env
 .env.local
 .env.*.local
+
+### Local config (never commit real credentials) ###
+application-local.properties
+**/application-local.properties

@@ -32,7 +32,7 @@ const Contact = () => {
       await appointmentAPI.create({
         ...appointmentData,
         appointmentDateTime,
-
+      });
 
       setMessage({
         type: 'success',
@@ -58,39 +58,6 @@ const Contact = () => {
     }
   };
 
-  const handleContactSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage({ type: '', text: '' });
-
-    try {
-      await leadAPI.create({
-        ...contactData,
-        source: 'WEBSITE',
-      });
-
-      setMessage({
-        type: 'success',
-        text: 'Thank you for contacting us! We will get back to you soon.',
-      });
-
-      // Reset form
-      setContactData({
-        name: '',
-        email: '',
-        phoneNumber: '',
-        message: '',
-      });
-    } catch (error) {
-      setMessage({
-        type: 'error',
-        text: error.response?.data?.message || 'Failed to send message. Please try again.',
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="contact">
       <section className="contact-hero">
@@ -102,29 +69,13 @@ const Contact = () => {
 
       <section className="contact-content">
         <div className="container">
-          <div className="form-tabs">
-            <button
-              className={`tab-button ${formType === 'appointment' ? 'active' : ''}`}
-              onClick={() => setFormType('appointment')}
-            >
-              📅 Book Appointment
-            </button>
-            <button
-              className={`tab-button ${formType === 'contact' ? 'active' : ''}`}
-              onClick={() => setFormType('contact')}
-            >
-              💬 Contact Us
-            </button>
-          </div>
-
           {message.text && (
             <div className={`message ${message.type}`}>
               {message.text}
             </div>
           )}
 
-          {formType === 'appointment' ? (
-            <form className="contact-form" onSubmit={handleAppointmentSubmit}>
+          <form className="contact-form" onSubmit={handleAppointmentSubmit}>
               <div className="form-group">
                 <label htmlFor="patientName">Full Name *</label>
                 <input
@@ -206,67 +157,6 @@ const Contact = () => {
                 {loading ? 'Booking...' : 'Book Appointment'}
               </button>
             </form>
-          ) : (
-            <form className="contact-form" onSubmit={handleContactSubmit}>
-              <div className="form-group">
-                <label htmlFor="contactName">Full Name *</label>
-                <input
-                  type="text"
-                  id="contactName"
-                  name="name"
-                  value={contactData.name}
-                  onChange={handleContactChange}
-                  required
-                  placeholder="Enter your full name"
-                />
-              </div>
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="contactEmail">Email *</label>
-                  <input
-                    type="email"
-                    id="contactEmail"
-                    name="email"
-                    value={contactData.email}
-                    onChange={handleContactChange}
-                    required
-                    placeholder="your.email@example.com"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="contactPhone">Phone Number *</label>
-                  <input
-                    type="tel"
-                    id="contactPhone"
-                    name="phoneNumber"
-                    value={contactData.phoneNumber}
-                    onChange={handleContactChange}
-                    required
-                    placeholder="+1234567890"
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="contactMessage">Message *</label>
-                <textarea
-                  id="contactMessage"
-                  name="message"
-                  value={contactData.message}
-                  onChange={handleContactChange}
-                  rows="6"
-                  required
-                  placeholder="Tell us how we can help you..."
-                />
-              </div>
-
-              <button type="submit" className="btn btn-primary btn-large" disabled={loading}>
-                {loading ? 'Sending...' : 'Send Message'}
-              </button>
-            </form>
-          )}
 
           <div className="contact-info">
             <div className="info-card">
