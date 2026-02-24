@@ -14,16 +14,24 @@ import java.util.List;
 public class CorsConfig {
     @Value("${frontend.url}")
     private String frontendUrl;
+
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        
+
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of(frontendUrl));
+
+        // Support multiple origins (comma-separated)
+        List<String> allowedOrigins = Arrays.asList(frontendUrl.split(","));
+        config.setAllowedOrigins(allowedOrigins.stream()
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .toList());
+
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        
+
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

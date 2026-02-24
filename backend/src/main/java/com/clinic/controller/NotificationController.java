@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/notifications")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 @Tag(name = "Notifications", description = "API for notification status (e.g. appointment confirmations)")
 public class NotificationController {
 

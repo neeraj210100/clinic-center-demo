@@ -21,7 +21,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/appointments")
 @RequiredArgsConstructor
-@CrossOrigin
 @Tag(name = "Appointments", description = "API endpoints for managing patient appointments")
 public class AppointmentController {
 
