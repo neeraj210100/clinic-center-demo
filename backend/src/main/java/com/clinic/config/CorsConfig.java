@@ -20,17 +20,20 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowCredentials(true);
-
         // Support multiple origins (comma-separated)
         List<String> allowedOrigins = Arrays.asList(frontendUrl.split(","));
-        config.setAllowedOrigins(allowedOrigins.stream()
+        List<String> trimmedOrigins = allowedOrigins.stream()
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
-                .toList());
+                .toList();
 
+        // Use setAllowedOriginPatterns for better compatibility with credentials
+        config.setAllowedOriginPatterns(trimmedOrigins);
+        config.setAllowCredentials(true);
         config.setAllowedHeaders(Arrays.asList("*"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        config.setExposedHeaders(Arrays.asList("*"));
+        config.setMaxAge(3600L); // Cache preflight for 1 hour
 
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
