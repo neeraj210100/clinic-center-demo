@@ -13,28 +13,17 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
     @Value("${frontend.url}")
-    private String frontendUrl;
-
+    private String url;
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-
-        // Support multiple origins (comma-separated)
-        List<String> allowedOrigins = Arrays.asList(frontendUrl.split(","));
-        List<String> trimmedOrigins = allowedOrigins.stream()
-                .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .toList();
-
-        // Use setAllowedOriginPatterns for better compatibility with credentials
-        config.setAllowedOriginPatterns(trimmedOrigins);
+        
         config.setAllowCredentials(true);
+        config.setAllowedOrigins(List.of("http://localhost:3000"));
         config.setAllowedHeaders(Arrays.asList("*"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        config.setExposedHeaders(Arrays.asList("*"));
-        config.setMaxAge(3600L); // Cache preflight for 1 hour
-
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
