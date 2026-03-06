@@ -12,7 +12,8 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns(url, "http://localhost:*", "https://*") // Use patterns for flexibility
+                .allowedOriginPatterns(url, "http://localhost:*", "https://*","https://incandescent-pasca-b52ff6.netlify.app"  // Explicit production URL
+                ) // Use patterns for flexibility
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 // Removed allowCredentials(true) - this conflicts with wildcard patterns
