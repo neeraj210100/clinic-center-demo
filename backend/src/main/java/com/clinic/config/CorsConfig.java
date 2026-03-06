@@ -11,11 +11,12 @@ public class CorsConfig implements WebMvcConfigurer {
     private String url;
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/**")
-                    .allowedOriginPatterns(url, "http://localhost:*", "https://*") // Use patterns for flexibility
-                    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                    .allowedHeaders("*")
-                    .allowCredentials(true)
-                    .maxAge(3600);
+        registry.addMapping("/**")
+                .allowedOriginPatterns(url, "http://localhost:*", "https://*") // Use patterns for flexibility
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                // Removed allowCredentials(true) - this conflicts with wildcard patterns
+                // Patterns work properly without credentials requirement
+                .maxAge(3600);
     }
 }

@@ -7,8 +7,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  // IMPORTANT: Set withCredentials to match backend allowCredentials(true)
-  withCredentials: true,
+  // Removed withCredentials - not needed since backend doesn't require credentials
 });
 
 // Request interceptor (optional - for logging/debugging)
@@ -57,13 +56,7 @@ api.interceptors.response.use(
 
 // Appointment API
 export const appointmentAPI = {
-  // Explicitly configure the POST request
-  create: (data) => api.post('/appointments', data, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    withCredentials: true,
-  }),
+  create: (data) => api.post('/appointments', data),
   getAll: () => api.get('/appointments'),
   getById: (id) => api.get(`/appointments/${id}`),
   updateStatus: (id, status) => api.put(`/appointments/${id}/status?status=${status}`),
