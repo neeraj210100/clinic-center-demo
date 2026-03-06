@@ -7,9 +7,8 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  // Only include withCredentials if you're using cookies/auth tokens
-  // If not using cookies, you can remove this and set allowCredentials(false) in backend
-  // withCredentials: true,
+  // IMPORTANT: Set withCredentials to match backend allowCredentials(true)
+  withCredentials: true,
 });
 
 // Request interceptor (optional - for logging/debugging)
@@ -18,6 +17,7 @@ api.interceptors.request.use(
     // Log request in development
     if (process.env.NODE_ENV === 'development') {
       console.log('API Request:', config.method?.toUpperCase(), config.url);
+      console.log('Full URL:', config.baseURL + config.url);
     }
     return config;
   },
@@ -33,6 +33,8 @@ api.interceptors.response.use(
     // Handle CORS errors specifically
     if (error.message === 'Network Error' || !error.response) {
       console.error('Network Error - Check if backend is running and CORS is configured correctly');
+      console.error('Request URL:', error.config?.url);
+      console.error('Base URL:', error.config?.baseURL);
       return Promise.reject({
         ...error,
         message: 'Unable to connect to server. Please check your connection and ensure the backend is running.',
@@ -42,6 +44,7 @@ api.interceptors.response.use(
     // Handle CORS preflight errors
     if (error.code === 'ERR_NETWORK' || error.response?.status === 0) {
       console.error('CORS Error - Check backend CORS configuration');
+      console.error('Origin:', window.location.origin);
       return Promise.reject({
         ...error,
         message: 'CORS error: Backend may not be allowing requests from this origin.',
@@ -54,7 +57,13 @@ api.interceptors.response.use(
 
 // Appointment API
 export const appointmentAPI = {
-  create: (data) => api.post('/appointments', data),
+  // Explicitly configure the POST request
+  create: (data) => api.post('/appointments', data, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    withCredentials: true,
+  }),
   getAll: () => api.get('/appointments'),
   getById: (id) => api.get(`/appointments/${id}`),
   updateStatus: (id, status) => api.put(`/appointments/${id}/status?status=${status}`),
