@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>New Appointment Notification</title>
+</head>
+<body>
+<h2>New Appointment Booking</h2>
+<p>A new appointment has been booked:</p>
+
+<h3>Patient Information</h3>
+<ul>
+    <li><strong>Name:</strong> <span th:text="${patientName}">Patient Name</span></li>
+    <li><strong>Email:</strong> <span th:text="${patientEmail}">patient@example.com</span></li>
+    <li><strong>Phone:</strong> <span th:text="${patientPhone}">+1 (234) 567-8900</span></li>
+</ul>
+
+<h3>Appointment Details</h3>
+<ul>
+    <li><strong>Date &amp; Time:</strong> <span th:text="${appointmentDateTime}">date time</span></li>
+    <li><strong>Reason for visit:</strong> <span th:text="${reason}">reason</span></li>
+    <li th:if="${notes != null && !notes.isEmpty()}">
+        <strong>Notes:</strong> <span th:text="${notes}">additional notes</span>
+    </li>
+</ul>
+
+<p>Please confirm this appointment and prepare accordingly.</p>
+
+<hr/>
+<p style="color: #666; font-size: 12px;">
+    This is an automated notification from <span th:text="${clinicName}">Clinic Center</span>
+</p>
+</body>
+</html>
