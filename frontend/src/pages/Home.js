@@ -15,7 +15,7 @@ const Home = () => {
           </p>
           <div className="hero-buttons">
             <Link to="/contact" className="btn btn-primary">
-              Book Appointment
+              Contact Us
             </Link>
             <Link to="/services" className="btn btn-secondary">
               Our Services
@@ -55,7 +55,7 @@ const Home = () => {
       <section className="cta-section">
         <div className="container">
           <h2>Ready to Take Care of Your Health?</h2>
-          <p>Schedule an appointment today and experience quality healthcare</p>
+          <p>Reach out today and experience quality healthcare</p>
           <Link to="/contact" className="btn btn-primary btn-large">
             Get Started
           </Link>

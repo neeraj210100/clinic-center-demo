@@ -36,8 +36,8 @@ public class OpenApiConfig {
                 .title("Clinic Center API")
                 .version("1.0.0")
                 .contact(contact)
-                .description("RESTful API for Clinic Center Management System. " +
-                        "This API provides endpoints for managing appointments, leads, and patient interactions.")
+                .description("RESTful API for Jagatpur Clinic Center. " +
+                        "Static marketing site; extend this API as needed.")
                 .termsOfService("https://www.cliniccenter.com/terms")
                 .license(license);
 
